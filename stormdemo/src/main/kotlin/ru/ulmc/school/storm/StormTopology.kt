@@ -56,12 +56,15 @@ object StormApp {
 
         topologyBuilder.setBolt(FILTER_BOLT, FilterBolt())
                 .shuffleGrouping(SOURCE_SPOUT)
+                .setMaxTaskParallelism(10)
 
         topologyBuilder.setBolt(TRUMP_BOLT, TrumpBolt())
                 .shuffleGrouping(FILTER_BOLT)
+                .setMaxTaskParallelism(10)
 
         topologyBuilder.setBolt(STORE_BOLT, StoreBolt())
-                .noneGrouping(TRUMP_BOLT)
+                .shuffleGrouping(TRUMP_BOLT)
+                .setMaxTaskParallelism(1)
 
         return topologyBuilder.createTopology()
     }

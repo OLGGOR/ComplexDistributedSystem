@@ -32,6 +32,7 @@ public class TrumpBolt extends BaseRichBolt {
     @Override
     public void prepare(Map<String, Object> topoConf, TopologyContext context, OutputCollector collector) {
         this.collector = collector;
+        service = new TrumpTweetLogicService();
     }
 
     @Override

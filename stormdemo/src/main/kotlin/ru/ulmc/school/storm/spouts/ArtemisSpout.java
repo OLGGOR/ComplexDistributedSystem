@@ -150,6 +150,12 @@ public class ArtemisSpout extends BaseRichSpout implements MessageListener {
              *   4. Назначить слушателя
              *   5. Подключиться
              */
+            ConnectionFactory connectionFactory = jmsContextHolder.getConnectionFactory();
+            Destination destination = jmsContextHolder.getDestination();
+            Connection connection = connectionFactory.createConnection();
+            Session session = connection.createSession(true, Session.CLIENT_ACKNOWLEDGE);
+            session.createConsumer(destination).setMessageListener(this);
+            connection.start();
         } catch (Exception e) {
             log.warn("Error creating JMS connection.", e);
         }
